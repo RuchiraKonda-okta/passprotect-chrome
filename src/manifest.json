@@ -3,6 +3,10 @@
   "version": "0.1.8",
   "description": "Stop using bad passwords. PassProtect alerts you about breached credentials. Powered by \"Have I Been Pwned?\".",
   "manifest_version": 2,
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "icons": {
     "16": "images/icon-16.png",
     "32": "images/icon-32.png",
@@ -16,5 +20,8 @@
     }
   ],
   "homepage_url": "https://www.passprotect.io",
-  "offline_enabled": false
+  "offline_enabled": false,
+  "permissions": [
+    "storage"
+  ]
 }

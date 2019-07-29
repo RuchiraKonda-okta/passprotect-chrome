@@ -226,6 +226,13 @@ function protectPasswordInput(evt) {
   var hashPrefix = hash.slice(0, 5);
   var shortHash = hash.slice(5);
   var xmlHttp = new XMLHttpRequest();
+  var options_param_message ='';
+
+  chrome.storage.sync.get('popupMessage', function(result) {
+  options_param_message = result.popupMessage;
+  console.log('Value currently is ' + result.popupMessage);
+
+  });
 
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
@@ -235,12 +242,9 @@ function protectPasswordInput(evt) {
         var data = resp[i].split(":");
 
         if (data[0].indexOf(shortHash) === 0) {
-          var message = [
-            '<p>The password you just entered has been found in <b>' + numberFormatter(parseInt(data[1]))  + '</b> data breaches. <b>This password is not safe to use</b>.</p>',
-            '<p>This means attackers can easily find this password online and will often try to access accounts with it.</p>',
-            '<p>If you are currently using this password, please change it immediately to protect yourself. For more information, visit <a href="https://haveibeenpwned.com/" title="haveibeenpwned">Have I Been Pwned?</a>',
-            '<p>This notice will not show again for the duration of this session to give you time to update this password.</p>'
-          ].join('');
+          var message = [ 
+            '<p>'+options_param_message+'</p>'
+            ].join('');
 
           vex.dialog.alert({
             message: "Unsafe password detected!",
