@@ -221,31 +221,40 @@ function getPasswordHash(password) {
  * @param {object} evt - The DOM event object.
  */
 function protectPasswordInput(evt) {
+   var host = getHost();
   var inputValue = evt.currentTarget.value;
   var hash = sha1(inputValue).toUpperCase();
   var hashPrefix = hash.slice(0, 5);
   var shortHash = hash.slice(5);
   var xmlHttp = new XMLHttpRequest();
   var options_param_message ='';
+  var domain_name_message;
+var count=1;
 
-  chrome.storage.sync.get('popupMessage', function(result) {
+/**
+* This function gets all the options that have been stored in chrome.storage 
+*/
+  chrome.storage.sync.get(["popupMessage", "domainName"], function(result) {
   options_param_message = result.popupMessage;
-  console.log('Value currently is ' + result.popupMessage);
-
+  domain_name_message=result.domainName;
   });
 
-  xmlHttp.onreadystatechange = function() {
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) { 
+     
       var resp = xmlHttp.responseText.split("\n");
-
-      for (var i = 0; i < resp.length; i++) {
+       for (var i = 0; i < resp.length; i++) {
         var data = resp[i].split(":");
-
         if (data[0].indexOf(shortHash) === 0) {
-          var message = [ 
+          //The domain list is splited to form an array 
+          var domain_array_list = domain_name_message.split("\n");
+          //We're using-if else loop to not alert the pop up to specific domains we would like to mention in user option's page
+          //Here we are testing if the array includes the host domain name or not .Based on the result the if else loop will be executed
+          if(!(domain_array_list.includes(host))){
+           var message = [ 
             '<p>'+options_param_message+'</p>'
             ].join('');
-
+         
           vex.dialog.alert({
             message: "Unsafe password detected!",
             input: message,
@@ -261,8 +270,13 @@ function protectPasswordInput(evt) {
             }
           });
         }
-      }
-    }
+        else{
+         console.log('No pop up alert displayed ')
+           
+        }
+      
+      }}
+  }
   };
 
   // If this hash is cached, we shouldn't do anything.
