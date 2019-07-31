@@ -229,8 +229,6 @@ function protectPasswordInput(evt) {
   var xmlHttp = new XMLHttpRequest();
   var options_param_message ='';
   var domain_name_message;
-var count=1;
-
 /**
 * This function gets all the options that have been stored in chrome.storage 
 */
