@@ -221,7 +221,7 @@ function getPasswordHash(password) {
  * @param {object} evt - The DOM event object.
  */
 function protectPasswordInput(evt) {
-   var host = getHost();
+  var host = getHost();
   var inputValue = evt.currentTarget.value;
   var hash = sha1(inputValue).toUpperCase();
   var hashPrefix = hash.slice(0, 5);
@@ -238,18 +238,17 @@ function protectPasswordInput(evt) {
   });
 
 xmlHttp.onreadystatechange = function() {
-    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) { 
-     
+  if (xmlHttp.readyState === 4 && xmlHttp.status === 200) { 
       var resp = xmlHttp.responseText.split("\n");
+       
        for (var i = 0; i < resp.length; i++) {
-        var data = resp[i].split(":");
+         var data = resp[i].split(":");
+
         if (data[0].indexOf(shortHash) === 0) {
-          //The domain list is splited to form an array 
           var domain_array_list = domain_name_message.split("\n");
-          //We're using-if else loop to not alert the pop up to specific domains we would like to mention in user option's page
-          //Here we are testing if the array includes the host domain name or not .Based on the result the if else loop will be executed
+
           if(!(domain_array_list.includes(host))){
-           var message = [ 
+            var message = [ 
             '<p>'+options_param_message+'</p>'
             ].join('');
          
