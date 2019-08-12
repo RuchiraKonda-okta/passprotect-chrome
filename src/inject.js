@@ -227,53 +227,53 @@ function protectPasswordInput(evt) {
   var hashPrefix = hash.slice(0, 5);
   var shortHash = hash.slice(5);
   var xmlHttp = new XMLHttpRequest();
-  var options_param_message ='';
-  var domain_name_message;
-/**
-* This function gets all the options that have been stored in chrome.storage 
-*/
+  var optionsParamMessage;
+  var domainNameMessage;
+
+  /**
+   * This function gets all the options that have been stored in chrome.storage
+   */
   chrome.storage.sync.get(["popupMessage", "domainName"], function(result) {
-  options_param_message = result.popupMessage;
-  domain_name_message=result.domainName;
+    optionsParamMessage = result.popupMessage;
+    domainNameMessage = result.domainName;
   });
 
-xmlHttp.onreadystatechange = function() {
-  if (xmlHttp.readyState === 4 && xmlHttp.status === 200) { 
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
       var resp = xmlHttp.responseText.split("\n");
        
-       for (var i = 0; i < resp.length; i++) {
-         var data = resp[i].split(":");
+      for (var i = 0; i < resp.length; i++) {
+        var data = resp[i].split(":");
 
         if (data[0].indexOf(shortHash) === 0) {
-          var domain_array_list = domain_name_message.split("\n");
+          var domainArrayList = domainNameMessage.split("\n");
 
-          if(!(domain_array_list.includes(host))){
-            var message = [ 
-            '<p>'+options_param_message+'</p>'
+          if (!(domainArrayList.includes(host))) {
+            var message = [
+              '<p>'+optionsParamMessage+'</p>'
             ].join('');
          
-          vex.dialog.alert({
-            message: "Unsafe password detected!",
-            input: message,
-            callback: function() {
-              // Cache this password once the user clicks the "I Understand" button
-              // so we don't continuously annoy the user with the same warnings.
-              //
-              // NOTE: We're using sessionStorage here (not localStorage) as we
-              // only want to not annoy the user for the duration of this
-              // session. Once they've come back to the site at a later time, we
-              // should bug them if they try to use the same password >:D
-              sessionStorage.setItem(getPasswordHash(inputValue), "true");
-            }
-          });
+            vex.dialog.alert({
+              message: "Unsafe password detected!",
+              input: message,
+              callback: function() {
+                // Cache this password once the user clicks the "I Understand" button
+                // so we don't continuously annoy the user with the same warnings.
+                //
+                // NOTE: We're using sessionStorage here (not localStorage) as we
+                // only want to not annoy the user for the duration of this
+                // session. Once they've come back to the site at a later time, we
+                // should bug them if they try to use the same password >:D
+                sessionStorage.setItem(getPasswordHash(inputValue), "true");
+              }
+            });
+          }
+          else{
+            console.log('No pop up alert displayed ')
+          }
         }
-        else{
-         console.log('No pop up alert displayed ')
-           
-        }
-      
-      }}
-  }
+      }
+    }
   };
 
   // If this hash is cached, we shouldn't do anything.
