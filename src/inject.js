@@ -268,9 +268,6 @@ function protectPasswordInput(evt) {
               }
             });
           }
-          else{
-            console.log('No pop up alert displayed ')
-          }
         }
       }
     }
