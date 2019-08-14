@@ -228,14 +228,14 @@ function protectPasswordInput(evt) {
   var shortHash = hash.slice(5);
   var xmlHttp = new XMLHttpRequest();
   var optionsParamMessage;
-  var domainNameMessage;
+  var domainNameList;
 
   /**
    * This function gets all the options that have been stored in chrome.storage
    */
   chrome.storage.sync.get(["popupMessage", "domainName"], function(result) {
     optionsParamMessage = result.popupMessage;
-    domainNameMessage = result.domainName;
+    domainNameList = result.domainName;
   });
 
   xmlHttp.onreadystatechange = function() {
@@ -246,17 +246,26 @@ function protectPasswordInput(evt) {
         var data = resp[i].split(":");
 
         if (data[0].indexOf(shortHash) === 0) {
-          var domainArrayList = domainNameMessage.split("\n");
+          var domainArrayList = domainNameList.split("\n");
 
-          if (!(domainArrayList.includes(host))) {
-            var message = [
-              '<p>'+optionsParamMessage+'</p>'
-            ].join('');
-         
+          if ((!(domainArrayList.includes(host))) || (typeof domainNameList == "undefined")) {
+
+            if (optionsParamMessage == "") {
+              var message = [
+                '<p>The password you just entered has been found in <b>' + numberFormatter(parseInt(data[1])) + '</b> data breaches. <b>This password is not safe to use</b>.</p>',
+                '<p>This means attackers can easily find this password online and will often try to access accounts with it.</p>',
+                '<p>If you are currently using this password, please change it immediately to protect yourself. For more information, visit <a href="https://haveibeenpwned.com/" title="haveibeenpwned">Have I Been Pwned?</a>',
+                '<p>This notice will not show again for the duration of this session to give you time to update this password.</p>'
+              ].join('');
+            } else {
+              var message = [
+                '<p>' + optionsParamMessage + '</p>'
+              ].join('');
+            }
             vex.dialog.alert({
               message: "Unsafe password detected!",
               input: message,
-              callback: function() {
+              callback: function () {
                 // Cache this password once the user clicks the "I Understand" button
                 // so we don't continuously annoy the user with the same warnings.
                 //
@@ -268,7 +277,7 @@ function protectPasswordInput(evt) {
               }
             });
           }
-        }
+        }    
       }
     }
   };

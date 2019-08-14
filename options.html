@@ -2,31 +2,27 @@
 <html>
 <head>
   <title>My Test Extension Options</title>
+  <link rel="stylesheet" type="text/css" href="options.css">
 </head>
 <body>
-<label for="popupMessageField">Message</label>
-<textarea id="popupMessageField"></textarea>
+<div class="logo">
+  <img src="/images/okta-logo.png" width="60" height="20" alt="oktaLogo">
+</div>
 <br />
 <br />
-
-<label for="domainNameField">Domain Name</label>
-<textarea id="domainNameField"></textarea>
 <br />
+<div class="customize-message">
+  <label for="popupMessageField"><b>Customize Message</b> </label>
+  <textarea id="popupMessageField"></textarea>
+</div>
+<br/>
+<div class="whitelisted-domain">
+  <label for="domainNameField"><b>Whitelisted Domain</b> </label>
+  <textarea id="domainNameField"></textarea>
+</div>
 <br />
-
-<button id="save" type="button">Save</button>
-
+<button id="save" type="button" >SAVE</button>
 <script src="options.js"></script>
-
-<style>
-  #save{
-    text-align: center;
-    display: block;
-    margin: 0 auto;
-    width:70px;
-    height:25px;
-  }
-</style>
 </body>
 </html>
 

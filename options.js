@@ -4,7 +4,7 @@
  */
 function restoreOptions() {
   chrome.storage.sync.get({
-    popupMessage:'data breaches',
+    popupMessage:'',
     domainName:''
   }, function(items) {
     document.getElementById('popupMessageField').value = items.popupMessage;

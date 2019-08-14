@@ -27,6 +27,7 @@ module.exports = {
       { from: './images', to: 'images' },
       { from: './options.html', to: 'options.html' },
       { from: './options.js', to: 'options.js' },
+      { from: './options.css', to: 'options.css' },
       { from: './src/manifest.json', to: 'manifest.json' }
     ])
   ]
