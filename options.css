@@ -1,7 +1,7 @@
 textarea {
     vertical-align: top;
     height:50px;
-    width: 600px;
+    width:100%;
     resize:none;
     display: inline-block;
 }
