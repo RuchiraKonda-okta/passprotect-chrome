@@ -1,8 +1,8 @@
 textarea {
     vertical-align: top;
-    height:50px;
-    width:100%;
-    resize:none;
+    height: 50px;
+    width: 100%;
+    resize: none;
     display: inline-block;
 }
 button {
